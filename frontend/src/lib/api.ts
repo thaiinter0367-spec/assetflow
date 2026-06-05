@@ -1,7 +1,15 @@
 import axios from 'axios';
 
+const getBaseURL = () => {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+  // Fallback to relative path on client side (same domain), and local backend on server side
+  return typeof window === 'undefined' ? 'http://localhost:4000' : '/_/backend';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
