@@ -8,6 +8,12 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
+  // Set global prefix if running on Vercel or configured via environment variables
+  const globalPrefix = configService.get<string>('GLOBAL_PREFIX') || (process.env.VERCEL ? '/_/backend' : '');
+  if (globalPrefix) {
+    app.setGlobalPrefix(globalPrefix);
+  }
+
   // Enable CORS
   const frontendUrl =
     configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
